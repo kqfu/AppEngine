@@ -42,8 +42,8 @@ public class Mortgage extends HttpServlet {
   }
 
   static double rate(double payment, int periods, double presentValue) {
-    double l = 0.001, r = .1;
-    while (r - l > 0.0001) {
+    double l = 0.01, r = .1;
+    while (r - l > 0.00001) {
       double mid = (l + r) / 2;
       double pay = payment(mid, periods, presentValue);
       if (pay < payment) {
