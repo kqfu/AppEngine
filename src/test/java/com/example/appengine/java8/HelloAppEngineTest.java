@@ -20,13 +20,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +32,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-/**
- * Unit tests for {@link HelloAppEngine}.
- */
+/** Unit tests for {@link HelloAppEngine}. */
 // [START example]
 @RunWith(JUnit4.class)
 public class HelloAppEngineTest {
@@ -65,7 +60,8 @@ public class HelloAppEngineTest {
     servletUnderTest = new HelloAppEngine();
   }
 
-  @After public void tearDown() {
+  @After
+  public void tearDown() {
     helper.tearDown();
   }
 
@@ -82,9 +78,7 @@ public class HelloAppEngineTest {
   @Test
   public void helloInfoTest() {
     String result = HelloAppEngine.getInfo();
-    assertThat(result)
-      .named("HelloInfo.getInfo")
-      .containsMatch("^Version:\\s+.+OS:\\s+.+User:\\s");
+    assertThat(result).named("HelloInfo.getInfo").containsMatch("^Version:\\s+.+OS:\\s+.+User:\\s");
   }
 }
 // [END example]

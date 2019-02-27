@@ -16,17 +16,12 @@
 
 package com.example.appengine.java8;
 
-import com.google.appengine.api.utils.SystemProperty;
-
 import java.io.IOException;
-import java.util.Properties;
-
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.util.logging.Logger;
 
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
 @WebServlet(name = "Mortgage", value = "/mortgage")
@@ -56,20 +51,21 @@ public class Mortgage extends HttpServlet {
   }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     double amount = Double.parseDouble(request.getParameter("amount"));
     double fees = Double.parseDouble(request.getParameter("fees"));
     double interest = Double.parseDouble(request.getParameter("interest"));
     int years = Integer.parseInt(request.getParameter("years"));
-    log.info(String.format("amount: %f, fees: %f, interest: %f, years: %d",
-                 amount, fees, interest, years));
+    log.info(
+        String.format(
+            "amount: %f, fees: %f, interest: %f, years: %d", amount, fees, interest, years));
 
     double monthlyPayment = payment(interest / 12, years * 12, amount);
-    response.getWriter().println("Monthly payment: " + Double.toString(monthlyPayment) + "<br>");
+    response
+        .getWriter()
+        .println(String.format("Monthly payment: %.2f <br>", Double.toString(monthlyPayment)));
     double apr = rate(monthlyPayment, years * 12, amount - fees) * 12;
-    response.getWriter().println("APR: " + Double.toString(apr) + "<br>");
+    response.getWriter().println(String.format("APR: %.3f%% <br>", 100 * Double.toString(apr)));
   }
-
 }
 // [END example]
