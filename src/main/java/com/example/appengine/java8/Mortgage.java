@@ -32,13 +32,13 @@ public class Mortgage extends HttpServlet {
     // v = 1 + r
     // pay * (1/v + 1/v^2 + 1/v^3 + ... + 1/v^term) = pv
     // pay * 1/v * (1-1/v^term) / (1-1/v) = pv
-    double v = 1 + rate;
-    return presentValue * (1 - 1 / v) * v / (1 - 1 / Math.pow(v, periods));
+    // pay - pv * v * (1-1/v) / (1-1/v^term)
+    return presentValue * rate / (1 - 1 / Math.pow(1 + rate, periods));
   }
 
   static double rate(double payment, int periods, double presentValue) {
-    double l = 0.01, r = .1;
-    while (r - l > 0.00001) {
+    double l = .000001, r = 1;
+    while (r - l > 0.000001) {
       double mid = (l + r) / 2;
       double pay = payment(mid, periods, presentValue);
       if (pay < payment) {
@@ -47,7 +47,7 @@ public class Mortgage extends HttpServlet {
         r = mid;
       }
     }
-    return l;
+    return r;
   }
 
   @Override
@@ -63,9 +63,9 @@ public class Mortgage extends HttpServlet {
     double monthlyPayment = payment(interest / 12, years * 12, amount);
     response
         .getWriter()
-        .println(String.format("Monthly payment: %.2f <br>", Double.toString(monthlyPayment)));
+        .println(String.format("Monthly payment: %.2f <br>", monthlyPayment));
     double apr = rate(monthlyPayment, years * 12, amount - fees) * 12;
-    response.getWriter().println(String.format("APR: %.3f%% <br>", 100 * Double.toString(apr)));
+    response.getWriter().println(String.format("APR: %.3f%% <br>", 100 * apr));
   }
 }
 // [END example]
